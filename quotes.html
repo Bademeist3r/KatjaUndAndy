@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Zitate & Insider ♡</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="quotes.js" defer></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f2dfcf">
+</head>
+
+<body>
+
+    <div class="quotes-container">
+
+        <div class="quotes-header">
+
+            <div class="quotes-heart">♡</div>
+
+            <p>Nur wir verstehen das</p>
+
+            <h1>Zitate & Insider</h1>
+
+        </div>
+
+
+        <!-- NEUES ZITAT -->
+
+        <div class="quote-input">
+
+            <textarea
+                id="QuoteInput"
+                placeholder="Was wurde gesagt? ♡"
+            ></textarea>
+
+            <input
+                type="text"
+                id="QuoteAuthor"
+                placeholder="Wer hat es gesagt?"
+            >
+
+            <button id="AddQuoteButton">
+                Zitat hinzufügen ♡
+            </button>
+
+        </div>
+
+
+        <!-- ZITATE -->
+
+        <div
+            id="QuotesList"
+            class="quotes-board"
+        ></div>
+
+
+        <button
+            id="BackToAlbum"
+            class="quotes-back"
+        >
+            ← Zurück zu den Erinnerungen
+        </button>
+
+    </div>
+
+</body>
+
+</html>

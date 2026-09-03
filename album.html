@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Album</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="album.js" defer></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f2dfcf">
+</head>
+
+<body>
+
+    <div class="album-container">
+
+        <button id="QuotesButton">
+            💬
+        </button>
+
+        <button id="BackButton" class="album-back">
+            <img src="pics/back.png" alt="Zurück">
+        </button>
+
+        <button id="PreviousButton">
+            <img src="pics/back.png" alt="Zurück">
+        </button>
+
+        <div id="ClickHint">
+            Klick mich! ♡
+            <span>↘</span>
+        </div>
+
+        <div class="polaroid">
+
+            <div class="polaroid-inner">
+
+                <div class="polaroid-front">
+
+                    <img
+                        id="AlbumImage"
+                        src="pics/20260803_20.12.png"
+                        alt="Foto"
+                    >
+
+                    <div class="polaroid-heart">
+                        ♡
+                    </div>
+
+                </div>
+
+                <div class="polaroid-back">
+
+                    <textarea
+                        id="Note"
+                        placeholder="Was denkst du über dieses Bild..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+            <p id="FlipHint" class="hidden">
+                ↑ Zum Umdrehen hier klicken ♡
+            </p>
+
+        </div>
+
+        <button id="NextButton">
+            <img src="pics/back.png" alt="Weiter">
+        </button>
+
+        <button id="AddButton">
+            <img src="pics/add.png" alt="Hinzufügen">
+        </button>
+
+        <input
+            type="file"
+            id="ImageUpload"
+            accept="image/*"
+            hidden
+        >
+
+    </div>
+
+</body>
+
+</html>
