@@ -7,6 +7,8 @@
     <title>Unsere kleine Welt ♡</title>
 
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabaseClient.js"></script>
     <script src="login.js" defer></script>
 </head>
 <body>
@@ -29,28 +31,50 @@
 
             <p class="login-text">
                 Schön, dass du da bist.<br>
-                Aber vorher brauche ich unser Geheimnis. ♡
+                Melde dich mit deiner E-Mail an. ♡
             </p>
 
             <div class="login-form">
-
+                <input
+                    type="email"
+                    id="EmailInput"
+                    placeholder="Deine E-Mail..."
+                    autocomplete="off"
+                >
                 <input
                     type="password"
                     id="PasswordInput"
-                    placeholder="Unser Passwort..."
+                    placeholder="Dein Passwort..."
                     autocomplete="off"
                 >
-
                 <button id="LoginButton">
                     Eintreten ♡
                 </button>
-
                 <p id="LoginError"></p>
-
+                <p class="register-link">
+                    Noch kein Konto? <a href="#" id="OpenRegisterModal">Registrieren</a>
+                </p>
             </div>
 
         </div>
 
+    </div>
+
+    <!-- Registrierungs-Modal -->
+    <div id="RegisterModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>Konto erstellen ♡</h2>
+
+            <input type="text" id="RegisterName" placeholder="Dein Name..." autocomplete="off">
+            <input type="email" id="RegisterEmail" placeholder="Deine E-Mail..." autocomplete="off">
+            <input type="password" id="RegisterPassword" placeholder="Passwort wählen..." autocomplete="off">
+
+            <button id="RegisterButton">Registrieren ♡</button>
+            <p id="RegisterError"></p>
+            <p id="RegisterSuccess"></p>
+
+            <button id="CloseRegisterModal" class="modal-close">✕</button>
+        </div>
     </div>
 
 </body>

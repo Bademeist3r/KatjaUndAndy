@@ -1373,6 +1373,235 @@ body {
     font-size: 0.95rem;
 }
 
+/* --- Email-Input im Login-Formular (gleiches Styling wie PasswordInput) --- */
+
+#EmailInput {
+    width: min(400px, 100%);
+
+    padding:
+        1.2rem
+        1.5rem;
+
+    border:
+        1px solid #ddc8b4;
+
+    border-radius: 1.5rem;
+
+    outline: none;
+
+    background: #fffdf8;
+
+    color: #5c4a3a;
+
+    font-family:
+        'Quicksand',
+        sans-serif;
+
+    font-size: 1.1rem;
+
+    text-align: center;
+
+    box-shadow:
+        0 5px 15px rgba(92, 74, 58, 0.08);
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+#EmailInput::placeholder {
+    color: #b9a18d;
+}
+
+#EmailInput:focus {
+    border-color: #d88976;
+
+    box-shadow:
+        0 5px 20px rgba(92, 74, 58, 0.12);
+}
+
+/* --- Link zum Öffnen des Registrierungs-Modals --- */
+
+.register-link {
+    margin: 0.5rem 0 0;
+
+    font-size: 0.95rem;
+
+    color: #8a6f5a;
+}
+
+.register-link a {
+    color: #d88976;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* --- Registrierungs-Modal --- */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 320px;
+    width: 90%;
+}
+
+.modal-card h2 {
+    margin: 0 0 0.5rem;
+
+    font-size: 1.8rem;
+
+    color: #5c4a3a;
+
+    text-align: center;
+
+    font-weight: 800;
+}
+
+.modal-card input {
+    width: 100%;
+
+    padding:
+        1rem
+        1.2rem;
+
+    border:
+        1px solid #ddc8b4;
+
+    border-radius: 1rem;
+
+    outline: none;
+
+    background: #fffdf8;
+
+    color: #5c4a3a;
+
+    font-family:
+        'Quicksand',
+        sans-serif;
+
+    font-size: 1rem;
+
+    text-align: center;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.25s ease;
+}
+
+.modal-card input::placeholder {
+    color: #b9a18d;
+}
+
+.modal-card input:focus {
+    border-color: #d88976;
+}
+
+#RegisterButton {
+    width: 100%;
+
+    padding:
+        1rem
+        1.5rem;
+
+    border: none;
+
+    border-radius: 1.5rem;
+
+    background:
+        linear-gradient(
+            145deg,
+            #9bbb83,
+            #829f6c
+        );
+
+    color: #fffaf5;
+
+    font-family:
+        'Quicksand',
+        sans-serif;
+
+    font-size: 1.1rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(92, 74, 58, 0.15);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+#RegisterButton:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(92, 74, 58, 0.2);
+}
+
+#RegisterError {
+    min-height: 1.2rem;
+
+    margin: 0;
+
+    color: #c47762;
+
+    font-size: 0.9rem;
+
+    text-align: center;
+}
+
+#RegisterSuccess {
+    min-height: 1.2rem;
+
+    margin: 0;
+
+    color: #7a9463;
+
+    font-size: 0.9rem;
+
+    text-align: center;
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
 @keyframes messageAppear {
     0% {
         opacity: 0;
@@ -1434,6 +1663,12 @@ body {
 }
 
 @media (max-width: 700px) {
+
+    #EmailInput,
+    #PasswordInput,
+    .modal-card input {
+        font-size: 16px;
+    }
 
     body {
         min-height: 100dvh;
@@ -1707,6 +1942,24 @@ body {
     #LoginButton {
         font-size: 1rem;
     }
+
+    #EmailInput {
+        font-size: 1rem;
+    }
+
+    .register-link {
+        font-size: 0.85rem;
+    }
+
+    .modal-card {
+        max-width: 90vw;
+
+        padding: 1.5rem;
+    }
+
+    .modal-card h2 {
+        font-size: 1.5rem;
+    }
 }
 
 @media (max-width: 500px) {
@@ -1758,4 +2011,8 @@ body {
     .pleasure-buttons {
         width: 94vw;
     }
+}
+.modal-card {
+    max-height: 85vh;
+    overflow-y: auto;
 }
