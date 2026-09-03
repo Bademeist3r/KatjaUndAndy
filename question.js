@@ -2,27 +2,27 @@ if (localStorage.getItem("loggedIn") !== "true") {
     window.location.href = "login.html";
 }
 
-const noButton = document.getElementById("NoButton");
+const yesButton = document.getElementById("YesButton");
 
-function moveNoButton() {
+function moveYesButton() {
 
-    const maxX = window.innerWidth - noButton.offsetWidth;
-    const maxY = window.innerHeight - noButton.offsetHeight;
+    const maxX = window.innerWidth - yesButton.offsetWidth;
+    const maxY = window.innerHeight - yesButton.offsetHeight;
 
     const newX = Math.random() * maxX;
     const newY = Math.random() * maxY;
 
-    noButton.style.position = "fixed";
-    noButton.style.left = newX + "px";
-    noButton.style.top = newY + "px";
+    yesButton.style.position = "fixed";
+    yesButton.style.left = newX + "px";
+    yesButton.style.top = newY + "px";
 }
 
-noButton.addEventListener("mouseover", function() {
-    moveNoButton();
+yesButton.addEventListener("mouseover", function() {
+    moveYesButton();
 });
 
-noButton.addEventListener("click", function() {
-    moveNoButton();
+yesButton.addEventListener("click", function() {
+    moveYesButton();
 });
 
 
@@ -30,18 +30,11 @@ noButton.addEventListener("click", function() {
 // JA BUTTON
 // =========================
 
-const yesButton = document.getElementById("YesButton");
+const noButton = document.getElementById("NoButton");
 
-yesButton.addEventListener("click", function() {
+noButton.addEventListener("click", function() {
 
-    // =====================================
-    // STARTZEIT SPEICHERN
-    // =====================================
 
-    localStorage.setItem(
-        "startTime",
-        new Date().toISOString()
-    );
 
 
     // =====================================
