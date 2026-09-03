@@ -2016,3 +2016,87 @@ body {
     max-height: 85vh;
     overflow-y: auto;
 }
+
+.visibility-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+
+    padding: 0.5rem 0;
+}
+
+.visibility-toggle-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #8a6f5a;
+    letter-spacing: 0.02em;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+
+    background: #e3d5c3;
+
+    transition: background 0.3s ease;
+
+    border-radius: 30px;
+
+    box-shadow:
+        inset 0 2px 4px rgba(92, 74, 58, 0.12);
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+
+    height: 24px;
+    width: 24px;
+
+    left: 3px;
+    bottom: 3px;
+
+    background: #fffaf3;
+
+    border-radius: 50%;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    box-shadow:
+        0 3px 8px rgba(92, 74, 58, 0.25);
+}
+
+.switch input:checked + .slider {
+    background:
+        linear-gradient(
+            145deg,
+            #e39a78,
+            #d47f5e
+        );
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(22px);
+}
+
+.switch input:focus-visible + .slider {
+    box-shadow:
+        inset 0 2px 4px rgba(92, 74, 58, 0.12),
+        0 0 0 3px rgba(216, 137, 118, 0.35);
+}

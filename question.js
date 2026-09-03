@@ -1,146 +1,163 @@
-if (localStorage.getItem("loggedIn") !== "true") {
-    window.location.href = "login.html";
+const API_BASE_URL = "http://127.0.0.1:8000";
+
+const QuoteInput = document.getElementById("QuoteInput");
+const QuoteAuthor = document.getElementById("QuoteAuthor");
+const AddQuoteButton = document.getElementById("AddQuoteButton");
+const QuotesList = document.getElementById("QuotesList");
+const BackToAlbum = document.getElementById("BackToAlbum");
+const VisibilityLabel = document.getElementById("VisibilityLabel");
+const ParentOnlyCheckbox = document.getElementById("ParentOnlyCheckbox");
+
+let currentRole = null;
+
+// --- Token an jeden Request hängen ---
+async function fetchWithAuth(url, options = {}) {
+    const { data } = await supabaseClient.auth.getSession();
+    const token = data.session?.access_token;
+
+    return fetch(url, {
+        ...options,
+        headers: {
+            ...options.headers,
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+    });
 }
 
-const yesButton = document.getElementById("YesButton");
+// --- Eigene Rolle laden, um Checkbox ggf. anzuzeigen ---
+async function loadOwnRole() {
+    const { data } = await supabaseClient.auth.getSession();
+    const userId = data.session?.user?.id;
 
-function moveYesButton() {
+    const { data: profile, error } = await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .single();
 
-    const maxX = window.innerWidth - yesButton.offsetWidth;
-    const maxY = window.innerHeight - yesButton.offsetHeight;
+    if (!error && profile) {
+        currentRole = profile.role;
 
-    const newX = Math.random() * maxX;
-    const newY = Math.random() * maxY;
-
-    yesButton.style.position = "fixed";
-    yesButton.style.left = newX + "px";
-    yesButton.style.top = newY + "px";
+        if (currentRole === "parent") {
+            VisibilityLabel.classList.remove("hidden");
+        }
+    }
 }
 
-yesButton.addEventListener("mouseover", function() {
-    moveYesButton();
-});
+// --- Zitate von der API laden ---
+async function loadQuotes() {
+    try {
+        const response = await fetchWithAuth(`${API_BASE_URL}/api/quotes`);
 
-yesButton.addEventListener("click", function() {
-    moveYesButton();
-});
+        if (!response.ok) {
+            console.error("Zitate konnten nicht geladen werden:", response.status);
+            return;
+        }
 
+        const quotes = await response.json();
+        showQuotes(quotes);
+    } catch (error) {
+        console.error("Fehler beim Laden der Zitate:", error);
+    }
+}
 
-// =========================
-// JA BUTTON
-// =========================
+function showQuotes(quotes) {
+    QuotesList.innerHTML = "";
 
-const noButton = document.getElementById("NoButton");
-
-noButton.addEventListener("click", function() {
-
-
-
-
-    // =====================================
-    // HERZEN / KONFETTI
-    // =====================================
-
-    const symbols = [
-        "♡",
-        "♥",
-        "♡",
-        "✦",
-        "♥",
-        "♡"
-    ];
-
-    const colors = [
-        "#9bbb83",
-        "#e39a78",
-        "#f5d6b3",
-        "#fff3d6",
-        "#d8bfa8",
-        "#f4b6a6",
-        "#b8c9a8"
-    ];
-
-    for (let i = 0; i < 80; i++) {
-
-        const particle = document.createElement("div");
-
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 250 + Math.random() * 650;
-
-        const targetX = Math.cos(angle) * distance;
-        const targetY = Math.sin(angle) * distance;
-
-        const size = 12 + Math.random() * 18;
-
-        particle.textContent =
-            symbols[Math.floor(Math.random() * symbols.length)];
-
-        particle.style.position = "fixed";
-
-        particle.style.left =
-            (window.innerWidth / 2) + "px";
-
-        particle.style.top =
-            (window.innerHeight / 2) + "px";
-
-        particle.style.fontSize =
-            size + "px";
-
-        particle.style.color =
-            colors[Math.floor(Math.random() * colors.length)];
-
-        particle.style.pointerEvents = "none";
-
-        particle.style.zIndex = "1000";
-
-        particle.style.transition =
-            "all 1.5s cubic-bezier(0.2, 0.8, 0.3, 1)";
-
-        particle.style.opacity = "1";
-
-        document.body.appendChild(particle);
-
-
-        setTimeout(function() {
-
-            particle.style.left =
-                (window.innerWidth / 2 + targetX) + "px";
-
-            particle.style.top =
-                (window.innerHeight / 2 + targetY) + "px";
-
-            particle.style.transform =
-                "rotate(" + (Math.random() * 720 - 360) + "deg) scale(0.5)";
-
-            particle.style.opacity = "0";
-
-        }, 10);
-
-
-        setTimeout(function() {
-            particle.remove();
-        }, 1500);
+    if (quotes.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "no-quotes";
+        empty.textContent = "Hier gibt es noch keine Insider... ♡";
+        QuotesList.appendChild(empty);
+        return;
     }
 
+    quotes.forEach(function (quote) {
+        const card = document.createElement("div");
+        card.className = "quote-card";
 
-    // =====================================
-    // KLEINE NACHRICHT
-    // =====================================
+        const icon = document.createElement("span");
+        icon.className = "quote-icon";
+        icon.textContent = "“";
 
-    const message = document.createElement("div");
+        const text = document.createElement("p");
+        text.textContent = quote.text;
 
-    message.className = "yes-message";
-    message.textContent = "Ich wusste es. ♡";
+        const author = document.createElement("small");
+        author.textContent = quote.author ? "— " + quote.author : "♡";
 
-    document.body.appendChild(message);
+        // kleines Schloss-Symbol bei "nur Eltern"-Zitaten
+        if (quote.visibility === "parent") {
+            const lock = document.createElement("span");
+            lock.textContent = " 🔒";
+            author.appendChild(lock);
+        }
 
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-quote";
+        deleteButton.textContent = "×";
 
-    // =====================================
-    // WEITER
-    // =====================================
+        deleteButton.addEventListener("click", async function () {
+            try {
+                await fetchWithAuth(`${API_BASE_URL}/api/quotes/${quote.id}`, {
+                    method: "DELETE",
+                });
+                loadQuotes();
+            } catch (error) {
+                console.error("Löschen fehlgeschlagen:", error);
+            }
+        });
 
-    setTimeout(function() {
-        window.location.href = "pleasure.html";
-    }, 1800);
+        card.appendChild(icon);
+        card.appendChild(text);
+        card.appendChild(author);
+        card.appendChild(deleteButton);
+        QuotesList.appendChild(card);
+    });
+}
 
+// --- Zitat hinzufügen ---
+AddQuoteButton.addEventListener("click", async function () {
+    const text = QuoteInput.value.trim();
+    const author = QuoteAuthor.value.trim();
+
+    if (!text) {
+        QuoteInput.focus();
+        return;
+    }
+
+    const visibility = ParentOnlyCheckbox.checked ? "parent" : "all";
+
+    try {
+        const response = await fetchWithAuth(`${API_BASE_URL}/api/quotes`, {
+            method: "POST",
+            body: JSON.stringify({ text, author, visibility }),
+        });
+
+        if (!response.ok) {
+            alert("Zitat konnte nicht gespeichert werden. ♡");
+            return;
+        }
+
+        QuoteInput.value = "";
+        QuoteAuthor.value = "";
+        ParentOnlyCheckbox.checked = false;
+        QuoteInput.focus();
+
+        loadQuotes();
+    } catch (error) {
+        console.error("Fehler beim Speichern:", error);
+    }
+});
+
+BackToAlbum.addEventListener("click", function () {
+    window.location.href = "album.html";
+});
+
+// --- Start: erst wenn Session bestätigt ist ---
+sessionPromise.then(function (session) {
+    if (session) {
+        loadOwnRole().then(loadQuotes);
+    }
 });

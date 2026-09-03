@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <metaname="viewport"content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zitate & Insider ♡</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -19,50 +19,43 @@
     <div class="quotes-container">
 
         <div class="quotes-header">
-
             <div class="quotes-heart">♡</div>
-
             <p>Nur wir verstehen das</p>
-
             <h1>Zitate & Insider</h1>
-
         </div>
-
 
         <!-- NEUES ZITAT -->
+    <div class="quote-input">
 
-        <div class="quote-input">
+        <textarea
+            id="QuoteInput"
+            placeholder="Was wurde gesagt? ♡"
+        ></textarea>
 
-            <textarea
-                id="QuoteInput"
-                placeholder="Was wurde gesagt? ♡"
-            ></textarea>
+        <input
+            type="text"
+            id="QuoteAuthor"
+            placeholder="Wer hat es gesagt?"
+        >
 
-            <input
-                type="text"
-                id="QuoteAuthor"
-                placeholder="Wer hat es gesagt?"
-            >
-
-            <button id="AddQuoteButton">
-                Zitat hinzufügen ♡
-            </button>
-
+        <div class="visibility-toggle">
+            <span class="visibility-toggle-text">Nur für Eltern sichtbar 🔒</span>
+            <label class="switch">
+                <input type="checkbox" id="ParentOnlyCheckbox">
+                <span class="slider"></span>
+            </label>
         </div>
 
+        <button id="AddQuoteButton">
+            Zitat hinzufügen ♡
+        </button>
+
+    </div>
 
         <!-- ZITATE -->
+        <div id="QuotesList" class="quotes-board"></div>
 
-        <div
-            id="QuotesList"
-            class="quotes-board"
-        ></div>
-
-
-        <button
-            id="BackToAlbum"
-            class="quotes-back"
-        >
+        <button id="BackToAlbum" class="quotes-back">
             ← Zurück zu den Erinnerungen
         </button>
 

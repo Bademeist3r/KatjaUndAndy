@@ -83,6 +83,25 @@ def create_album_entry(entry: AlbumEntry, user=Depends(get_current_user)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+class NoteUpdate(BaseModel):
+    note: str
+
+@app.patch("/api/album/{entry_id}")
+def update_note(entry_id: int, update: NoteUpdate, user=Depends(get_current_user)):
+    try:
+        result = (
+            supabase.table("album_images")
+            .update({"note": update.note})
+            .eq("id", entry_id)
+            .execute()
+        )
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Eintrag nicht gefunden")
+        return result.data
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.delete("/api/album/{entry_id}")
 def delete_album_entry(entry_id: int, user=Depends(get_current_user)):
@@ -96,6 +115,75 @@ def delete_album_entry(entry_id: int, user=Depends(get_current_user)):
         )
         if not result.data:
             raise HTTPException(status_code=404, detail="Eintrag nicht gefunden")
+        return {"deleted": result.data}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+def get_current_profile(user=Depends(get_current_user)):
+    result = (
+        supabase.table("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single()
+        .execute()
+    )
+    if not result.data:
+        raise HTTPException(status_code=404, detail="Profil nicht gefunden")
+    return {"id": user.id, "role": result.data["role"]}
+
+
+class QuoteEntry(BaseModel):
+    text: str
+    author: str = ""
+    visibility: str = "all"  # "all" oder "parent"
+
+
+@app.get("/api/quotes")
+def get_quotes(profile=Depends(get_current_profile)):
+    try:
+        query = supabase.table("quotes").select("*").order("id", desc=True)
+
+        # Kinder sehen nur Einträge mit visibility = 'all'
+        if profile["role"] == "child":
+            query = query.eq("visibility", "all")
+
+        result = query.execute()
+        return result.data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/quotes")
+def create_quote(entry: QuoteEntry, profile=Depends(get_current_profile)):
+    try:
+        result = (
+            supabase.table("quotes")
+            .insert({
+                "text": entry.text,
+                "author": entry.author,
+                "visibility": entry.visibility,
+                "user_id": profile["id"],
+            })
+            .execute()
+        )
+        return result.data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/quotes/{quote_id}")
+def delete_quote(quote_id: int, profile=Depends(get_current_profile)):
+    try:
+        result = (
+            supabase.table("quotes")
+            .delete()
+            .eq("id", quote_id)
+            .execute()
+        )
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Zitat nicht gefunden")
         return {"deleted": result.data}
     except HTTPException:
         raise
